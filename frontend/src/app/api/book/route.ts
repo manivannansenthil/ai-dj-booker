@@ -29,9 +29,8 @@ export async function POST(req: NextRequest) {
       console.log("BLAND_API_KEY: Loaded");
     }
 
-    // Webhook URL for Bland AI to notify us (update this if deployed)
-    const webhook =
-      "https://flexible-narwhal-suitably.ngrok-free.app/api/bland-webhook";
+    // Webhook URL for Bland AI to notify us (production)
+    const webhook = "https://ai-dj-booker.vercel.app/api/bland-webhook";
 
     // Call each venue with Bland AI
     const results = [];
