@@ -17,6 +17,32 @@ A full-stack Next.js app that uses Bland AI to act as a booking agent for DJs. T
 3. Bland AI calls the venue, delivers your pitch, and collects a contact if interested.
 4. Webhook results are displayed live in the UI.
 
+## Data Flow
+
+1. **Frontend Form:** User enters venue, dates, style, and notes.
+2. **Form Submission:** Data is sent to `/api/book` (backend API route).
+3. **Backend:** Generates a personalized prompt and sends a POST to Bland AI's API.
+4. **Bland AI:** Calls the venue and interacts using the prompt.
+5. **Webhook:** Bland AI sends call results to `/api/bland-webhook`.
+6. **In-Memory Store:** Webhook handler saves results in memory.
+7. **Frontend Polling:** UI polls `/api/bland-status` for updates and displays them live.
+
+```mermaid
+sequenceDiagram
+    participant User as User (Frontend)
+    participant App as Next.js API Route (/api/book)
+    participant Bland as Bland AI API
+    participant Webhook as Next.js API Route (/api/bland-webhook)
+    participant Status as Next.js API Route (/api/bland-status)
+
+    User->>App: Submit form (venue, dates, style, notes)
+    App->>Bland: POST /v1/calls (personalized prompt, phone, webhook)
+    Bland-->>Webhook: POST call result (after call)
+    Webhook->>Status: Store result in memory
+    User->>Status: Poll for call results
+    Status-->>User: Return latest call results
+```
+
 ## Setup & Development
 
 ### 1. Clone the Repo
