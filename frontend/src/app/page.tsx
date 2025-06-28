@@ -12,7 +12,7 @@ const agentSteps = [
 
 export default function Home() {
   const [form, setForm] = useState({
-    city: "",
+    venue: "",
     startDate: "",
     endDate: "",
     style: "",
@@ -29,15 +29,6 @@ export default function Home() {
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // For testing: disable form fields and use a single Make Call button
-  const testForm = {
-    city: "New York City",
-    startDate: "2024-07-01",
-    endDate: "2024-07-08",
-    style: "Groovy trance house, melodic techno/house",
-    notes: "Happy hour sets, flexible, can send sampler.",
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,11 +53,18 @@ export default function Home() {
       const res = await fetch("/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(testForm),
+        body: JSON.stringify(form),
       });
       const data = await res.json();
       if (res.ok) {
         setMessage("✅ Booking request sent!");
+        setForm({
+          venue: "",
+          startDate: "",
+          endDate: "",
+          style: "",
+          notes: "",
+        });
       } else {
         setMessage(data.error || "❌ Something went wrong.");
       }
@@ -97,22 +95,110 @@ export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-pink-100 p-4">
       <div className="w-full max-w-2xl flex flex-col items-center gap-6 mx-auto">
-        {/* Booking Card */}
-        <div className="w-full">
-          <div className="backdrop-blur-md bg-white/60 shadow-2xl rounded-3xl p-10 flex flex-col items-center border border-white/40">
-            <h1 className="text-3xl font-extrabold text-center mb-2 text-black tracking-tight drop-shadow-sm">
-              DJ Booking Agent
-            </h1>
+        {/* Booking Card with Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="backdrop-blur-md bg-white/60 shadow-2xl rounded-3xl p-10 w-full flex flex-col gap-8 border border-white/40"
+          style={{ boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.18)" }}
+        >
+          <h1 className="text-3xl font-extrabold text-center mb-2 text-black tracking-tight drop-shadow-sm">
+            DJ Booking Agent
+          </h1>
+          <div>
+            <label
+              className="block text-base font-semibold mb-2 text-black"
+              htmlFor="venue"
+            >
+              Venue Name
+            </label>
+            <input
+              type="text"
+              id="venue"
+              name="venue"
+              value={form.venue}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm placeholder-gray-400"
+              placeholder="e.g. Arcana, Elsewhere, House of Yes"
+            />
           </div>
-        </div>
-        {/* Make Call Button */}
-        <div className="w-full flex flex-col items-center">
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label
+                className="block text-base font-semibold mb-2 text-black"
+                htmlFor="startDate"
+              >
+                Start Date
+              </label>
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                value={form.startDate}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm"
+              />
+            </div>
+            <div className="flex-1">
+              <label
+                className="block text-base font-semibold mb-2 text-black"
+                htmlFor="endDate"
+              >
+                End Date
+              </label>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                value={form.endDate}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm"
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              className="block text-base font-semibold mb-2 text-black"
+              htmlFor="style"
+            >
+              DJ Style / Genre
+            </label>
+            <input
+              type="text"
+              id="style"
+              name="style"
+              value={form.style}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm placeholder-gray-400"
+              placeholder="e.g. House, Techno, Open Format"
+            />
+          </div>
+          <div>
+            <label
+              className="block text-base font-semibold mb-2 text-black"
+              htmlFor="notes"
+            >
+              Special Notes / Extra Info
+            </label>
+            <textarea
+              id="notes"
+              name="notes"
+              value={form.notes}
+              onChange={handleChange}
+              rows={3}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm placeholder-gray-400"
+              placeholder="e.g. I bring my own gear, have a big following, etc."
+            />
+          </div>
           <button
-            onClick={handleSubmit}
+            type="submit"
             className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-3 rounded-xl shadow-md hover:scale-105 hover:from-pink-500 hover:to-blue-600 transition-all duration-200 text-lg tracking-wide drop-shadow disabled:opacity-60 disabled:cursor-not-allowed w-full"
             disabled={loading}
           >
-            {loading ? "Calling..." : "Make Call"}
+            {loading ? "Submitting..." : "Submit"}
           </button>
           {message && (
             <div
@@ -123,7 +209,7 @@ export default function Home() {
               {message}
             </div>
           )}
-        </div>
+        </form>
         {/* Agent Panel */}
         <div className="w-full flex flex-col items-center">
           <div
