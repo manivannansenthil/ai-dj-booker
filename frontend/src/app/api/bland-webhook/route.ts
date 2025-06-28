@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// In-memory store for webhook results
-export const blandCallResults: unknown[] = [];
+import { blandCallResults } from "../bland-memory";
 
 export async function POST(req: NextRequest) {
   try {
