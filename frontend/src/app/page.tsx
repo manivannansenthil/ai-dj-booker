@@ -38,7 +38,7 @@ export default function Home() {
     setShowAgent(true);
     setAgentStep(0);
     // Animate agent steps
-    let step = 0;
+    const step = 0;
     const interval = setInterval(() => {
       setAgentStep((prev) => {
         if (prev < agentSteps.length - 1) {

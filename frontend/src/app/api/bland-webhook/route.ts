@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // In-memory store for webhook results
-export const blandCallResults: any[] = [];
+export const blandCallResults: unknown[] = [];
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     // Store the webhook data in memory
     blandCallResults.push({ ...data, receivedAt: new Date().toISOString() });
     return NextResponse.json({ received: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Invalid webhook payload." },
       { status: 400 }
