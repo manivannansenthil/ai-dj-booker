@@ -22,7 +22,7 @@ export default function Home() {
   const [message, setMessage] = useState<string | null>(null);
   const [showAgent, setShowAgent] = useState(false);
   const [agentStep, setAgentStep] = useState(0);
-  const [callResults, setCallResults] = useState<any[]>([]);
+  const [callResults, setCallResults] = useState<unknown[]>([]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,7 +38,6 @@ export default function Home() {
     setShowAgent(true);
     setAgentStep(0);
     // Animate agent steps
-    const step = 0;
     const interval = setInterval(() => {
       setAgentStep((prev) => {
         if (prev < agentSteps.length - 1) {
@@ -68,7 +67,7 @@ export default function Home() {
       } else {
         setMessage(data.error || "❌ Something went wrong.");
       }
-    } catch (err) {
+    } catch {
       setMessage("❌ Network error.");
     } finally {
       setLoading(false);
@@ -229,29 +228,39 @@ export default function Home() {
                 callResults
                   .slice(-5)
                   .reverse()
-                  .map((result, i) => (
-                    <div
-                      key={i}
-                      className="rounded-lg px-4 py-2 text-black bg-white/80 shadow-sm border border-gray-100 transition-all duration-300"
-                    >
-                      <div className="font-bold">
-                        {result.venue || result.to || "Unknown Venue"}
-                      </div>
-                      <div className="text-sm">
-                        Status: {result.status || result.state || "N/A"}
-                      </div>
-                      {result.message && (
-                        <div className="text-xs text-gray-600">
-                          {result.message}
+                  .map((result, i) => {
+                    const r = result as {
+                      venue?: string;
+                      to?: string;
+                      status?: string;
+                      state?: string;
+                      message?: string;
+                      receivedAt?: string;
+                    };
+                    return (
+                      <div
+                        key={i}
+                        className="rounded-lg px-4 py-2 text-black bg-white/80 shadow-sm border border-gray-100 transition-all duration-300"
+                      >
+                        <div className="font-bold">
+                          {r.venue || r.to || "Unknown Venue"}
                         </div>
-                      )}
-                      {result.receivedAt && (
-                        <div className="text-xs text-gray-400">
-                          {new Date(result.receivedAt).toLocaleTimeString()}
+                        <div className="text-sm">
+                          Status: {r.status || r.state || "N/A"}
                         </div>
-                      )}
-                    </div>
-                  ))
+                        {r.message && (
+                          <div className="text-xs text-gray-600">
+                            {r.message}
+                          </div>
+                        )}
+                        {r.receivedAt && (
+                          <div className="text-xs text-gray-400">
+                            {new Date(r.receivedAt).toLocaleTimeString()}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
               ) : showAgent ? (
                 agentSteps.slice(0, agentStep + 1).map((step, i) => (
                   <div
