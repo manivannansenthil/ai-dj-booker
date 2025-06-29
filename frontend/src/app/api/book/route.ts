@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
           status: blandRes.status,
           blandData,
         });
-      } catch (err) {
+      } catch {
         results.push({
           venue: "Test Call",
           error: "Failed to initiate test call.",
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
             status: blandRes.status,
             blandData,
           });
-        } catch (err) {
+        } catch {
           results.push({
             venue: venue,
             error: "Failed to initiate call.",

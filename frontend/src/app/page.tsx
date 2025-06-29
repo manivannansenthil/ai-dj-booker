@@ -10,6 +10,8 @@ const agentSteps = [
   "Done! Check your dashboard soon.",
 ];
 
+type ContactResult = { email?: string; phone?: string; [key: string]: unknown };
+
 export default function Home() {
   const [form, setForm] = useState({
     venue: "",
@@ -382,9 +384,9 @@ export default function Home() {
               {showAgent && callResults.length > 0 ? (
                 (() => {
                   // Find the most recent call result with email or phone
-                  const contactResult = callResults.find(
-                    (r: any) => r.email || r.phone
-                  ) as any;
+                  const contactResult = (callResults as ContactResult[]).find(
+                    (r) => r.email || r.phone
+                  );
                   return (
                     <>
                       {contactResult && (
