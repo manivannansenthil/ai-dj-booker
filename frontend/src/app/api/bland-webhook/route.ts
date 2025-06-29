@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     // Log the webhook data for now
     console.log("Bland AI Webhook received:", JSON.stringify(data, null, 2));
     // Extract email/phone if present
-    const contactInfo = {};
+    const contactInfo: { email?: string; phone?: string } = {};
     if (data.entities) {
       if (data.entities.email) contactInfo.email = data.entities.email;
       if (data.entities.phone) contactInfo.phone = data.entities.phone;
