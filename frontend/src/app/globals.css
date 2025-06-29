@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -12,15 +12,197 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  letter-spacing: 0.01em;
+  font-size: 16px;
+}
+
+/* Remove gradients and use solid backgrounds for a premium look */
+.bg-gradient-to-br,
+.bg-white\/60,
+.bg-white\/80,
+.bg-blue-100,
+.bg-blue-400,
+.bg-pink-100,
+.bg-pink-400 {
+  background: #111111 !important;
+}
+
+input,
+textarea {
+  background: #18181b !important;
+  color: #ededed !important;
+  border: 1px solid #232323 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: none !important;
+}
+
+input:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: #444cf7 !important;
+  box-shadow: 0 0 0 2px #444cf733;
+}
+
+label {
+  color: #ededed !important;
+}
+
+button {
+  background: linear-gradient(90deg, #232323 0%, #444cf7 100%) !important;
+  color: #ededed !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600;
+  box-shadow: 0 2px 12px 0 #00000033;
+  transition: background 0.2s, transform 0.2s;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #444cf7 0%, #232323 100%) !important;
+  transform: scale(1.03);
+}
+
+/* Card and panel backgrounds */
+.shadow-2xl,
+.shadow-xl,
+.shadow-md,
+.shadow-sm {
+  box-shadow: 0 4px 32px 0 #00000066 !important;
+}
+
+.rounded-3xl,
+.rounded-xl,
+.rounded-lg {
+  border-radius: 1.5rem !important;
+}
+
+.border,
+.border-white\/40,
+.border-gray-100,
+.border-gray-200 {
+  border: 1px solid #232323 !important;
+}
+
+/* Premium, minimal divider */
+hr {
+  border: none;
+  border-top: 1px solid #232323;
+  margin: 2rem 0;
+}
+
+/* Button shine and glow animation */
+@keyframes button-shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.button-animated {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 12px 0 #00000033;
+}
+.button-animated:hover {
+  transform: scale(1.045);
+  box-shadow: 0 0 16px 2px #444cf7cc, 0 2px 12px 0 #00000033;
+}
+.button-animated::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    #ffffff33 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.button-animated:hover::before {
+  animation: button-shine 2s linear;
+  opacity: 1;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.98);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.98);
+  }
+}
+.animate-fade-in-out {
+  animation: fade-in-out 3.5s both;
+}
+
+@keyframes bounce-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(8px);
+  }
+  40% {
+    transform: translateY(16px);
+  }
+  60% {
+    transform: translateY(8px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+}
+.animate-bounce-down {
+  animation: bounce-down 1.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animated gradient background for the app */
+@keyframes bg-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.bg-animated-shine {
+  background: linear-gradient(
+    120deg,
+    #18181b 0%,
+    #444cf7 40%,
+    #fff 60%,
+    #a259ff 80%,
+    #0a0a0a 100%
+  );
+  background-size: 300% 300%;
+  animation: bg-shine 12s ease-in-out infinite;
 }

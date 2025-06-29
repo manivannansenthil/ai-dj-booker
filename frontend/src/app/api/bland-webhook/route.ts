@@ -6,8 +6,20 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     // Log the webhook data for now
     console.log("Bland AI Webhook received:", JSON.stringify(data, null, 2));
-    // Store the webhook data in memory
-    blandCallResults.push({ ...data, receivedAt: new Date().toISOString() });
+    // Extract email/phone if present
+    let contactInfo = {};
+    if (data.entities) {
+      if (data.entities.email) contactInfo.email = data.entities.email;
+      if (data.entities.phone) contactInfo.phone = data.entities.phone;
+    }
+    if (data.email) contactInfo.email = data.email;
+    if (data.phone) contactInfo.phone = data.phone;
+    // Store the webhook data in memory, including contact info if found
+    blandCallResults.push({
+      ...data,
+      ...contactInfo,
+      receivedAt: new Date().toISOString(),
+    });
     return NextResponse.json({ received: true });
   } catch {
     return NextResponse.json(
