@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       // Test call to user's phone
       const prompt = `This is a test call for your booking request. Please speak as naturally as possible, with warmth and genuine enthusiasm. Use a friendly, persuasive, and conversational tone.\n\nHi there!${
         agentName ? ` This is ${agentName},` : ""
-      } I hope your day's going well. I'm reaching out because I'm helping book an incredible talent, ${talentName}, for some happy hour sets at places like ${venue} between ${startDate} and ${endDate}.\n\n${talentName} is truly special and brings an amazing energy to every event. I genuinely believe they'd be a perfect fit for your space and your crowd. ${
+      } I hope your day's going well. I'm reaching out because I'm helping book a talented DJ named ${talentName} for some happy hour sets at places like ${venue} between ${startDate} and ${endDate}.\n\n${talentName} is truly special and brings an amazing energy to every event. I genuinely believe they'd be a perfect fit for your space and your crowd. ${
         notes
           ? notes
           : "If you have any questions or need more info, let me know!"
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
         // Use form data to personalize the prompt and first sentence
         const prompt = `Please speak as naturally as possible, with warmth and genuine enthusiasm. Use a friendly, persuasive, and conversational tone.\n\nHi there!${
           agentName ? ` This is ${agentName},` : ""
-        } I hope your day's going well. I'm reaching out because I'm helping book an incredible talent, ${talentName}, for some happy hour sets at places like ${venue} between ${startDate} and ${endDate}.\n\n${talentName} is truly special and brings an amazing energy to every event. I genuinely believe they'd be a perfect fit for your space and your crowd. ${
+        } I hope your day's going well. I'm reaching out because I'm helping book a talented DJ named ${talentName} for some happy hour sets at places like ${venue} between ${startDate} and ${endDate}.\n\n${talentName} is truly special and brings an amazing energy to every event. I genuinely believe they'd be a perfect fit for your space and your crowd. ${
           notes
             ? notes
             : "If you have any questions or need more info, let me know!"
