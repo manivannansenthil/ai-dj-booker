@@ -17,6 +17,7 @@ export default function Home() {
     endDate: "",
     style: "",
     notes: "",
+    agentName: "",
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -63,6 +64,7 @@ export default function Home() {
           endDate: "",
           style: "",
           notes: "",
+          agentName: "",
         });
       } else {
         setMessage(data.error || "❌ Something went wrong.");
@@ -190,6 +192,24 @@ export default function Home() {
               rows={3}
               className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm placeholder-gray-400"
               placeholder="e.g. I bring my own gear, have a big following, etc."
+            />
+          </div>
+          <div>
+            <label
+              className="block text-base font-semibold mb-2 text-black"
+              htmlFor="agentName"
+            >
+              Booking Agent Name
+            </label>
+            <input
+              type="text"
+              id="agentName"
+              name="agentName"
+              value={form.agentName}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black bg-white/80 transition-all duration-200 shadow-sm placeholder-gray-400"
+              placeholder="e.g. Walter, Priya, Alex"
             />
           </div>
           <button

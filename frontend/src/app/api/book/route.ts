@@ -4,12 +4,12 @@ const BLAND_API_KEY = process.env.BLAND_API_KEY;
 const BLAND_API_URL = "https://api.bland.ai/v1/calls";
 
 // Static list of venues for demo
-const venues = [{ name: "your mom's", phone: "+19805059936" }];
+const venues = [{ name: "arcana", phone: "+19805059936" }];
 
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const { venue, startDate, endDate, style, notes } = data;
+    const { venue, startDate, endDate, style, notes, agentName } = data;
 
     // Basic validation (optional)
     if (!venue || !startDate || !endDate || !style) {
@@ -36,9 +36,13 @@ export async function POST(req: NextRequest) {
     const results = [];
     for (const venueObj of venues) {
       // Use form data to personalize the prompt and first sentence
-      const prompt = `Speak naturally, like a real person. Use a friendly, casual tone, contractions, and natural pauses. Add small talk if it feels right.\n\nHey! This is Walter, trytab's booking agent. Hope your day's going well. I'm reaching out because trytab—a groovy trance house and melodic techno DJ from San Francisco—is in town from ${startDate} to ${endDate}, and we're hoping to line up a few happy hour sets at places like ${venue}.\n\nHis vibe is super chill—think groovy trance house, melodic techno, a little amapiano, sultry pop, and desi rhythms. It's all about building energy slowly, keeping the mood up, but never overpowering the space. Perfect for early evenings, happy hours, or that transition into the night.\n\nHe's played all sorts of creative events back in SF, always shows up early, and adapts to whatever you need. If you're interested, I can send over a 15-min sampler or a past happy hour set so you can hear the vibe.\n\nNo pressure at all—he just hasn't been in ${venue} in forever and loves playing here when he can. Even if it's last minute or just a guest slot, we'd love to work with you if it fits!\n\nWould you be open to having him spin a set at your space during that week? If you're not sure, I can send over some mixes or links—whatever's easiest. What's the best email or number to send a few sample sets and chat next steps?\n\nThanks so much for your time!${
-        notes ? `\n\nExtra info: ${notes}` : ""
-      }`;
+      const prompt = `Speak naturally, like a real person. Use a friendly, casual tone, contractions, and natural pauses. Add small talk if it feels right.\n\nHey!${
+        agentName ? ` This is ${agentName},` : ""
+      } Hope your day's going well. I'm reaching out because I'm helping organize music for some happy hour sets at places like ${venue} between ${startDate} and ${endDate}.\n\n$${
+        notes
+          ? notes
+          : "If you have any questions or need more info, let me know!"
+      }\n\nWould you be open to having a DJ spin a set at your space during that week? If you're not sure, I can send over some mixes or links—whatever's easiest. What's the best email or number to send a few sample sets and chat next steps?\n\nThanks so much for your time!`;
       const payload = {
         phone_number: venueObj.phone,
         task: prompt,
